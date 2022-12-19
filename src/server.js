@@ -1,5 +1,6 @@
 const https = require('https');
 require('dotenv').config();
+const fs = require('fs');
 
 const app = require('./app');
 const { mongoConnect } = require('./services/mongo');
@@ -7,7 +8,10 @@ const { mongoConnect } = require('./services/mongo');
 const PORT = process.env.PORT || 8000;
 
 
-const server = https.createServer(app);
+const server = https.createServer({
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem'),
+}, app);
 
 
 async function startServer() {
